@@ -1,0 +1,550 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello world!</title>
+    <!-- zui -->
+	<link href="{% static 'dist/css/zui.min.css' %}" rel="stylesheet">
+	<link href="{% static 'dist/css/zui-theme.css' %}" rel="stylesheet">
+	<link href="{% static 'dist/css/my-theme.css' %}" rel="stylesheet">
+	<link href="{% static 'dist/lib/dashboard/zui.dashboard.min.css' %}" rel="stylesheet">
+	<link href="{% static 'dist/lib/datagrid/zui.datagrid.min.css' %}" rel="stylesheet">
+	<link href="{% static 'dist/lib/datatable/zui.datatable.min.css'%}" rel="stylesheet">
+  </head>
+  <body>
+	<nav class="navbar navbar-inverse navbar-fixed-top navbar-bg-black" role="navigation">
+		<div class="container-fluid">
+			<!-- 导航头部 -->
+			<div class="navbar-header">
+				<!-- 移动设备上的导航切换按钮 -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-example">
+					<span class="sr-only">切换导航</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<!-- 品牌名称或logo -->
+				<a class="navbar-brand" href="/">MENTAL</a>
+			</div>
+			<!-- 导航项目 -->
+			<div class="collapse navbar-collapse navbar-collapse-example navbar-right">
+				<!-- 一般导航项目 -->
+				<ul class="nav navbar-nav">
+					<li class=""><a href="your/nice/url">项目</a></li>
+					<li><a href="your/nice/url">需求</a></li>
+					...
+					<!-- 导航中的下拉菜单 -->
+					<li class="dropdown">
+					<a href="your/nice/url" class="dropdown-toggle" data-toggle="dropdown"><img src="http://zui.sexy/docs/img/img2.jpg" width="20px" height="20px" class="img-circle" alt="圆形图片"> <b class="caret"></b></a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="your/nice/url">设置</a></li>
+						<li><a href="{% url 'logout' %}">退出</a></li>
+					</ul>
+					</li>
+				</ul>
+			</div><!-- END .navbar-collapse -->
+		</div>
+	</nav>
+
+	<nav class="menu menuContainer" data-ride="menu">
+			<ul id="treeMenu" class="tree tree-menu" data-ride="tree">
+				<li class="open">
+					<a href="#"><i class="icon icon-th"></i>资产管理</a>
+					<ul>
+						<li class="active"><a href="#">机房</a></li>
+						<li><a href="{% url 'hostinfo' %}">服务器</a></li>
+						<li><a href="#">主机组</a></li>
+						<li><a href="#">应用管理</a></li>
+						<li><a href="#">应用组</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#"><i class="icon icon-file-text"></i>发布管理</a>
+					<ul>
+						<li><a href="#">一键发布管理</a></li>
+						<li><a href="#">app发布管理</a></li>
+						<li><a href="#">代码管理</a></li>
+						<li><a href="#">代码发布</a></li>
+					</ul>
+				</li>
+				<li>
+				<a href="#"><i class="icon icon-time"></i>系统运维</a>
+				<ul>
+					<li><a href="#">服务自动部署</a></li>
+					<li><a href="#">批量任务管理</a></li>
+					<li><a href="#">计划任务管理</a></li>
+					<li><a href="#">脚本管理</a></li>
+					<li><a href="#">备份管理</a></li>
+					<li><a href="#">定时任务管理</a></li>
+				</ul>
+				</li>
+				<li>
+					<a href="#"><i class="icon icon-edit"></i>日志管理</a>
+					<ul>
+							<li><a href="#">操作审计</a></li>
+							<li><a href="#">用户日志</a></li>
+							<li><a href="#">备份记录</a></li>
+							<li><a href="#">服务日志管理</a></li>
+					</ul>
+				</li>
+				<li><a href="#"><i class="icon icon-list-ul"></i>监控管理</a></li>
+				<li>
+				<a href="#"><i class="icon icon-tasks"></i>系统配置</a>
+				<ul>
+					<li><a href="#"><i class="icon icon-user"></i>用户管理</a></li>
+					<li><a href="#"><i class="icon icon-play-sign"></i>角色管理</a></li>
+					<li><a href="#"><i class="icon icon-ok-sign"></i>权限管理</a></li>
+				</ul>
+				</li>
+			</ul>
+	</nav>
+	
+	<div class="pageContainer">
+		<div class="pageHead">
+				<ol class="breadcrumb">
+						<li><a href="/"><i class="icon icon-home"></i>首页</a></li>
+						<li><a href="#">资产管理</a></li>
+						<li class="active">机房</li>
+				</ol>
+				<hr>
+		</div>
+
+		<div class="pageContent">
+			<div class="pageContentHead">
+			
+					<h4 class="pull-left">机房列表</h4>
+					<button id="BatchDeletion" type="button" class="btn btn-primary  btn-danger pull-right">批量删除</button>
+					<button type="button" class="btn btn-primary pull-right" data-waittime="5000" data-iframe="{% url 'cpform' %}" data-toggle="modal" data-loading-icon="icon-spinner-snake" data-height="600">添加机房</button>
+
+					<table class="table datatable">
+							<thead>
+							  <tr>
+                                    <th style="display: none">uid</th>
+									<th>id</th>
+									<th>机房名字</th>
+									<th>机房地址</th> 
+									<th>机房联系人</th>
+									<th>联系人电话</th>
+									<th>机房描述</th>
+                                    <th>操作</th>
+							  </tr>
+							</thead>
+							<tbody>
+                            {% for con in contacts  %}
+							  <tr>
+									<td style="display: none">{{con.id}}</td>
+									<td >{{forloop.counter}} </td>
+									<td>{{ con.name }}</td>
+									<td>{{ con.address }}</td>
+									<td>{{ con.contacts }}</td>
+									<td>{{ con.telephone }}</td>
+									<td>{{ con.describe }}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                                <button type="button" class="btn btn-danger">操作</button>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-danger dropdown-toggle"  data-toggle="dropdown">
+                                                        <span class="caret"></span>
+                                                        <span class="sr-only">操作</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="#" onclick="ButtonOnclick(this,'edit')"  data-url="{{ con.id }}">编辑</a></li>
+                                                        <li><a href="#" onclick="ButtonOnclick(this, 'dele')"  data-url="{{ con.id }}">删除</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+									</td>
+								</tr>
+                            {% endfor %}
+							</tbody>
+					</table>
+					<ul class="pager" data-ride="pager"  data-page="1" data-rec-total="{{ paginator.obj_count }}" data-max-nav-count="5" data-elements="prev_icon,nav,next_icon,items_range_text,total_text,size_menu" data-link-creator="{%  url 'cproom' %}?page={page}&recPerPage={recPerPage}" id="myPagerExample"></ul>
+			</div>
+		</div>
+
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- jQuery (ZUI中的Javascript组件依赖于jQuery) -->
+    <script src="{%  static 'dist/js/jquery-3.3.1.min.js' %}"></script>
+    <!-- ZUI Javascript组件 -->
+	<script src="{% static 'dist/js/zui.min.js' %}"></script>
+	<script src="{% static 'dist/lib/dashboard/zui.dashboard.min.js' %}"></script>
+	<script src="{% static 'dist/lib/datagrid/zui.datagrid.min.js' %}"></script>
+	<script src="{% static 'dist/lib/datatable/zui.datatable.min.js' %}"></script>
+
+	<script>
+        //修改数据
+        function AjaxHtml(data) {
+           var _htm = "";
+           _htm += "<div class=\"pageForm container\">\n";
+           _htm += " <form class=\"form-horizontal\" action=\"/asset/cpform/\" method=\"post\">\n";
+           _htm += "<input type=\"hidden\" name=\"action\" value=\"update\">";
+           _htm += "<input type=\"hidden\" name=\"id\" value=\""+data.id+"\">";
+           _htm += " <div class=\"form-group\">\n" +
+               "      <label for=\"exampleCpname\" class=\"col-sm-2\">机房名字</label>\n" +
+               "      <div class=\"col-md-6 col-sm-10\">\n" +
+               "      <input type=\"text\" class=\"form-control\" id=\"exampleCpname\" name=\"name\" value=\""+data.name+"\">\n" +
+               "      </div>\n" +
+               "   </div>";
+           _htm += "<div class=\"form-group\">\n" +
+               "      <label for=\"exampleCpaddr\" class=\"col-sm-2\">机房地址</label>\n" +
+               "      <div class=\"col-md-6 col-sm-10\">\n" +
+               "      <input type=\"text\" class=\"form-control\" id=\"exampleCpaddr\" name=\"address\" value=\""+data.address+"\">\n" +
+               "      </div>\n" +
+               "    </div>";
+           _htm += "               <div class=\"form-group\">\n" +
+               "                    <label for=\"exampleCpcontacts\" class=\"col-sm-2\">机房联系人</label>\n" +
+               "                    <div class=\"col-md-6 col-sm-10\">\n" +
+               "                    <input type=\"text\" class=\"form-control\" id=\"exampleCpcontacts\" name=\"contacts\" value=\""+data.contacts+"\">\n" +
+               "                    </div>\n" +
+               "                </div>    ";
+           _htm += "               <div class=\"form-group\">\n" +
+               "                    <label for=\"exampleCptele\" class=\"col-sm-2\">联系人电话</label>\n" +
+               "                    <div class=\"col-md-6 col-sm-10\">\n" +
+               "                    <input type=\"tel\" class=\"form-control\" id=\"exampleCptele\" name=\"telephone\" value=\""+data.telephone+"\">\n" +
+               "                    </div>\n" +
+               "                </div> ";
+           _htm += "               <div class=\"form-group\">\n" +
+               "                    <label for=\"exampleCpdescribe\" class=\"col-sm-2\">机房描述</label>\n" +
+               "                    <div class=\"col-md-6 col-sm-10\">\n" +
+               "                    <textarea class=\"form-control\" rows=\"3\" id=\"exampleCpdescribe\" name=\"describe\">"+data.describe+"</textarea>\n" +
+               "                    </div>\n" +
+               "                </div>  ";
+           _htm += "                <div class=\"form-group\">\n" +
+               "                    <div class=\"col-sm-offset-2 col-sm-10\">\n" +
+               "                    <button type=\"submit\" class=\"btn btn-default\">提交</button>\n" +
+               "                    </div>\n" +
+               "                </div>\n" +
+               "            </form>\n" +
+               "\n" +
+               "        </div>";
+           return _htm;
+        }
+        function ButtonOnclick(obj,action){
+            if (action == "edit") {
+                $.ajax({
+                    url:"/asset/cpform/",
+                    type:"POST",
+                    //dataType:"json",
+                    async : false,
+                    data:{"action":action,"id":$(obj).attr("data-url")},
+                    success:function (data) {
+                            var obj = eval('(' + data + ')');
+                            var _ajaxData =  new Object();
+                            _ajaxData.id = obj[0].pk;
+                            _ajaxData.name = obj[0].fields.name;
+                            _ajaxData.describe = obj[0].fields.describe;
+                            _ajaxData.address = obj[0].fields.address;
+                            _ajaxData.contacts = obj[0].fields.contacts;
+                            _ajaxData.telephone = obj[0].fields.telephone;
+                            (new $.zui.ModalTrigger({
+                                title: "修改",
+                                custom: AjaxHtml(_ajaxData)
+                            })).show();
+                    }
+                });
+            }else {
+                $.MsgBox.Confirm("温馨提示", "确定要进行删除吗？", function(){
+                        $.ajax({
+                            type: "POST",
+                            url:"/asset/cpform/",
+                            async : false,
+                            data:{"action":action,"id":$(obj).attr("data-url")},
+                            success: function (data) {
+                                alert(data);
+                                 window.location.reload();
+                            },
+                        });
+
+                });
+
+            }
+
+		}
+
+
+		//菜单
+		$('#treeMenu').on('click', 'a', function() {
+    		$('#treeMenu li.active').removeClass('active');
+    		$(this).closest('li').addClass('active');
+		});
+
+
+		//表格和分页
+		function getUrlParam(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+				var r = window.location.search.substr(1).match(reg); //匹配目标参数
+				if (r != null) return unescape(r[2]); return null; //返回参数值
+		}
+
+        (function () {
+               var error_message = getUrlParam("error_message");
+               var mess = "";
+               if (error_message == null || error_message ==""){
+
+               }else {
+                    try {
+                        var obj =  eval('(' + error_message + ')');
+                        for (var key in obj){
+                            mess += key+":"+obj[key][0].message+"\n";
+                        }
+                    }catch (e) {
+                           mess += error_message;
+                    }
+                     new $.zui.Messager('提示消息:' + mess, {
+                        type: 'danger', // 定义颜色主题
+                        close: false,
+                        time:0,
+                        actions: [{
+                            name: 'off',
+                            icon: 'off',
+                            text: '关闭',
+                            action: function () {  // 点击该操作按钮的回调函数
+                            }
+                        }]
+                      }).show();
+               }
+            }
+        )();
+
+        //表格初始化
+		$('table.datatable').datatable({
+            sortable: true,
+            checkable: true,
+            checksChanged:function (e) {
+                //var data =$('table.datatable').datatable().data();
+                 // var obj =  eval('(' + data + ')');
+                //console.log(data["zui.datatable"].data);
+            }
+		});
+		//分页初始化及跳转控制
+		$('#myPagerExample').pager(
+		    {
+                page:getUrlParam("page") == undefined || getUrlParam("page") == null ?1:parseInt(getUrlParam("page")),
+                recPerPage:getUrlParam("recPerPage") == undefined || getUrlParam("recPerPage") == null ? 10:parseInt(getUrlParam("recPerPage")),
+                linkCreator: function(page, pager) {
+                        return '{%  url 'cproom' %}?page=' + page + '&recPerPage='+ pager.recPerPage;
+                },
+                onPageChange: function(state,oldState) {
+                    if(getUrlParam("recPerPage") != undefined || getUrlParam("recPerPage") != null){
+                        if (state.recPerPage != parseInt(getUrlParam("recPerPage"))){
+                            location.href= '{%  url 'cproom' %}?page=' + state.page + '&recPerPage='+ state.recPerPage;
+                        }
+                    }else {
+                        if(oldState.recPerPage != undefined ){
+                           if(state.recPerPage != oldState.recPerPage){
+                               location.href= '{%  url 'cproom' %}?page=' + state.page + '&recPerPage='+ state.recPerPage;
+                           }
+                        }
+                    }
+                }
+		    }
+		);
+
+
+
+
+
+		//批量删除
+		function deleAll() {
+    	    var data =$('table.datatable').datatable().data()["zui.datatable"].data.rows;
+    	    var id_list = new Array();
+    	     for ( var key in data ){
+    	         if ( data[key].checked ==true ){
+    	              var list_data = data[key].data;
+    	              for(var val in  list_data){
+                          if(list_data[val].css == "display: none"){
+                             var id = list_data[val].text
+                             id_list.push(id);
+                          }
+                      }
+                 }
+             }
+            $.ajax({
+                type: "POST",
+                url:"/asset/cpform/",
+                async : false,
+                data:{"action":"deleAll","id":id_list.toString()},
+                success: function (data) {
+                     alert(data);
+                     window.location.reload();
+                },
+             });
+
+		}
+		$("#BatchDeletion").bind("click", function() {
+    		$.MsgBox.Confirm("温馨提示", "确定要进行删除吗？", deleAll);
+		});
+
+		
+
+		(function() {
+        $.MsgBox = {
+            Alert: function(title, msg) {
+                GenerateHtml("alert", title, msg);
+                btnOk(); //alert只是弹出消息，因此没必要用到回调函数callback
+                btnNo();
+            },
+            Confirm: function(title, msg, callback) {
+                GenerateHtml("confirm", title, msg);
+                btnOk(callback);
+                btnNo();
+            }
+        }
+    //生成Html
+    var GenerateHtml = function(type, title, msg) {
+        var _html = "";
+        _html += '<div id="mb_box"></div><div id="mb_con"><span id="mb_tit">' + title + '</span>';
+        _html += '<a id="mb_ico">x</a><div id="mb_msg">' + msg + '</div><div id="mb_btnbox">';
+        if (type == "alert") {
+            _html += '<input id="mb_btn_ok" type="button" value="确定" />';
+        }
+        if (type == "confirm") {
+            _html += '<input id="mb_btn_ok" type="button" value="确定" />';
+            _html += '<input id="mb_btn_no" type="button" value="取消" />';
+        }
+        _html += '</div></div>';
+        //必须先将_html添加到body，再设置Css样式
+        $("body").append(_html);
+        //生成Css
+        GenerateCss();
+    }
+
+    //生成Css
+    var GenerateCss = function() {
+        $("#mb_box").css({
+            width: '100%',
+            height: '100%',
+            zIndex: '99999',
+            position: 'fixed',
+            filter: 'Alpha(opacity=60)',
+            backgroundColor: 'black',
+            top: '0',
+            left: '0',
+            opacity: '0.6'
+        });
+        $("#mb_con").css({
+            zIndex: '999999',
+            width: '400px',
+            position: 'fixed',
+            backgroundColor: 'White',
+            borderRadius: '15px'
+        });
+        $("#mb_tit").css({
+            display: 'block',
+            fontSize: '14px',
+            color: '#444',
+            padding: '10px 15px',
+            backgroundColor: '#DDD',
+            borderRadius: '15px 15px 0 0',
+            borderBottom: '3px solid #009BFE',
+            fontWeight: 'bold'
+        });
+        $("#mb_msg").css({
+            padding: '20px',
+            lineHeight: '20px',
+            borderBottom: '1px dashed #DDD',
+            fontSize: '13px'
+        });
+        $("#mb_ico").css({
+            display: 'block',
+            position: 'absolute',
+            right: '10px',
+            top: '9px',
+            border: '1px solid Gray',
+            width: '18px',
+            height: '18px',
+            textAlign: 'center',
+            lineHeight: '16px',
+            cursor: 'pointer',
+            borderRadius: '12px',
+            fontFamily: '微软雅黑'
+        });
+        $("#mb_btnbox").css({
+            margin: '15px 0 10px 0',
+            textAlign: 'center'
+        });
+        $("#mb_btn_ok,#mb_btn_no").css({
+            width: '85px',
+            height: '30px',
+            color: 'white',
+            border: 'none'
+        });
+        $("#mb_btn_ok").css({
+            backgroundColor: '#168bbb'
+        });
+        $("#mb_btn_no").css({
+            backgroundColor: 'gray',
+            marginLeft: '20px'
+        });
+        //右上角关闭按钮hover样式
+        $("#mb_ico").hover(function() {
+            $(this).css({
+                backgroundColor: 'Red',
+                color: 'White'
+            });
+        }, function() {
+            $(this).css({
+                backgroundColor: '#DDD',
+                color: 'black'
+            });
+        });
+        var _widht = document.documentElement.clientWidth; //屏幕宽
+        var _height = document.documentElement.clientHeight; //屏幕高
+        var boxWidth = $("#mb_con").width();
+        var boxHeight = $("#mb_con").height();
+        //让提示框居中
+        $("#mb_con").css({
+            top: (_height - boxHeight) / 2 + "px",
+            left: (_widht - boxWidth) / 2 + "px"
+        });
+    }
+    //确定按钮事件
+    var btnOk = function(callback) {
+        $("#mb_btn_ok").click(function() {
+            $("#mb_box,#mb_con").remove();
+            if (typeof(callback) == 'function') {
+                callback();
+            }
+        });
+    }
+    //取消按钮事件
+    var btnNo = function() {
+        $("#mb_btn_no,#mb_ico").click(function() {
+            $("#mb_box,#mb_con").remove();
+        });
+    }
+})();
+
+	</script>
+  </body>
+</html>
